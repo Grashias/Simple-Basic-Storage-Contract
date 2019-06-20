@@ -1,5 +1,5 @@
 # Simple-Basic-Storage-Contract
-Basic Solidity contract that explains the Solidity language functions and how to to start with coding.
+Basic Solidity smart contract that explains the Solidity language functions and how to to start with coding.
 
 # Contract description
 
