@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Basic Storage Demo</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="http://localhost:8337/UI/css/bootstrap.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="http://localhost:8337/UI/css/business-casual.css" rel="stylesheet">
+
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+    <div class="container">
+
+        <div class="row">
+            <div class="box">
+
+                <div class="col-md-12">
+                    <!-- Nav tabs -->
+                    <div class="card">
+                        <ul class="nav nav-tabs" role="tablist">
+                          <label style="margin-left: 30%; font-size: xx-large";>Simple Demo on Basic Storage</label>
+                          <!-- <li role="presentation"><a href="#menu3" id="update_clk" aria-controls="menu3" role="tab" data-toggle="tab"><span>Update</span></a></li>
+                            <li role="presentation"><a href="#menu4" id="delete_clk" aria-controls="menu4" role="tab" data-toggle="tab">  <span>Delete</span></a></li> -->
+                        </ul>
+            
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="menu1">
+                                <form role="form">
+                                    <div class="row">
+                                        <div class="form-group col-lg-3">
+                                            <input type="submit" id="getValue" tabindex="4" class="form-control btn btn-primary" value="Get Value">
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <input class="form-control" id="fetchedValue" type="text">
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <input type="submit" id="setValue" tabindex="4" class="form-control btn btn-primary" value="Set Value">
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <input class="form-control" id="setInputValue" type="text" placeholder="Set Value">
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <input type="submit" id="incrementValue" tabindex="4" class="form-control btn btn-primary" value="Increment Value">
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <input class="form-control" id="incrementInputValue" type="text" placeholder="Increment Value">
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <input type="submit" id="decrementValue" tabindex="4" class="form-control btn btn-primary" value="Decrement Value">
+                                        </div>
+                                        <div class="form-group col-lg-3">
+                                            <input class="form-control" id="decrementInputValue" type="text" placeholder="Decrement Value">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                            <div class="lbl" style="text-align:center;">
+                              <label id="label_common"></label>
+                            </div>
+
+                            <label id="txlink" style="margin-left: 20%">
+                                <span id="txspan" style="display: none;">Check your transaction status : </span>
+                                <a id="linktx" href = '' target="_blank"></a>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+    <!-- jQuery -->
+    <script src="http://localhost:8337/UI/js/jquery.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="http://localhost:8337/UI/js/bootstrap.min.js"></script>
+    <script src="http://localhost:8337/UI/js/abi.js"></script>
+<script>
+
+window.addEventListener('load', async () => {
+
+    // Modern dapp browsers...
+    if (window.ethereum) {
+        window.web3 = new Web3(ethereum);
+        try {
+            // Request account access if needed
+            await ethereum.enable();
+            console.log(web3);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    // Legacy dapp browsers...
+    else if (window.web3) {
+        window.web3 = new Web3(web3.currentProvider);
+        console.log(web3);
+    }
+    // Non-dapp browsers...
+    else {
+        window.web3 = new Web3('http://localhost:7545');  //local server if it is running
+        console.log(web3);
+    }
+
+    //var web3 = new Web3.providers.HttpProvider("http://18.188.174.52:7890");
+    //web3.eth.defaultAccount = web3.eth.accounts[0];
+    
+    //console.log(contract);
+
+    console.log(contract);
+    console.log(web3.eth.accounts[0]);
+    
+  
+    $("#getValue").click(function() {
+      contract.get(function(err,res){
+        if(!err){
+            console.log(res);
+            $("#fetchedValue").val(res);
+        } else {
+            console.log(err);
+        }
+        return false;
+      });
+      return false;
+    });
+
+    $("#setValue").click(function() {
+
+      contract.set($("#setInputValue").val(), {from: web3.eth.accounts[0]}, function(err,res){
+        if(!err){
+            console.log(res);
+            //$("#setInputValue").val(res);
+            console.log("https://rinkeby.etherscan.io/tx/"+res);
+            $("#txspan").show();
+            $("#linktx").text(res);
+            $("#linktx").attr('href', 'https://rinkeby.etherscan.io/tx/' + res);
+        } else {
+            console.log(err);
+        }
+        return false;
+      });
+      return false;
+    });
+
+    $("#incrementValue").click(function() {
+
+      contract.increment($("#incrementInputValue").val(), {from: web3.eth.accounts[0]}, function(err,res){
+        if(!err){
+            console.log(res);
+            //$("#setInputValue").val(res);
+            console.log("https://rinkeby.etherscan.io/tx/"+res);
+            $("#txspan").show();
+            $("#linktx").text(res);
+            $("#linktx").attr('href', 'https://rinkeby.etherscan.io/tx/' + res);
+        } else {
+            console.log(err);
+        }
+        return false;
+      });
+      return false;
+    });
+
+    $("#decrementValue").click(function() {
+
+      contract.decrement($("#decrementInputValue").val(), {from: web3.eth.accounts[0]}, function(err,res){
+        if(!err){
+            console.log(res);
+            //$("#setInputValue").val(res);
+            console.log("https://rinkeby.etherscan.io/tx/"+res);
+            $("#txspan").show();
+            $("#linktx").text(res);
+            $("#linktx").attr('href', 'https://rinkeby.etherscan.io/tx/' + res);
+        } else {
+            console.log(err);
+        }
+        return false;
+      });
+    return false;
+    });
+});
+</script>
+  
+</body>
+</html>
