@@ -11,10 +11,10 @@ Check at https://rinkeby.etherscan.io/address/0x3e4c9a04119f590939fefb0799bf2193
 
 a. NodeJS installed
 b. Metamask chrome extension installed 
-(- Install from https://metamask.io/
+ - Install from https://metamask.io/
  - Create accounts by following the steps
  - Select the network to Rinkeby test network
- - Faucet some ethers to the created account from https://faucet.rinkeby.io/)
+ - Faucet some ethers to the created account from https://faucet.rinkeby.io/
 
 # Contract edit and deployment
 
